@@ -1,0 +1,15 @@
+
+<div>{{ screen_links|safe }}</div>
+
+<div style="margin-top:5px;margin-bottom:5px;min-height:25px" class="error">
+  {% if error %}
+    {{ error }}
+  {% endif %}
+</div>
+
+{% block content %}
+<div>
+  &nbsp;
+</div>
+{% endblock content %}
+

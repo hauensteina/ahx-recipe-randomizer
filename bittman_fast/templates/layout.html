@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+
+{% block pre %}
+  <script type='text/javascript'>
+   /* Filename: bittman_fast/templates/layout.tmpl
+    * Author: AHN
+    * Creation Date: Sep, 2022
+    */
+  </script>
+{% endblock pre %}
+
+<html lang='en'>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset='utf-8'>
+    <meta name='description' content='The Recipe Randomizer'>
+    <meta name='keywords' content='Recipes'>
+    <meta name='author' content='Andreas Hauenstein'>
+
+    <title>The Recipe Randomizer</title>
+    <link rel="icon" href="static/images/favicon.png" type="image/ico" />
+    <link rel="shortcut icon" href="static/images/favicon.png" type="image/ico" />
+
+    <!-- Standard frameworks -->
+    <!-- <script src='https://code.jquery.com/jquery-3.6.0.min.js'> </script>
+    -->
+    <!-- Our own stuff -->
+    <!-- <script type='text/javascript' src='static/js/ahaux_utils.js?rand={{ rrand() }}'></script>
+         <script type='text/javascript'> const axutil = new AhauxUtils($) </script> -->
+    
+    <!-- Main entry point -->
+    <!-- <script type='text/javascript' src='static/js/main.js?rand={{ rrand() }}'></script>
+    -->
+    <!-- Our CSS -->
+    <link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="css/base.css") }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="css/tabs.css") }}'>
+    <link rel='stylesheet' type='text/css' href='{{ url_for("static", filename="css/main.css") }}'>
+    {% block css %}
+    {% endblock css %}
+
+  </head>
+
+  <body style='left:0; margin:0; margin-left:50px; margin-right:50px; padding:0;'>
+    <!-- Page Header -->
+    <table class='center' style='width:100%' style='background-color:white'>
+      <tr style='background-color:white'>
+        <!-- <td id='homelogo' align='left' width='50px' class=''>
+             <a class='hlink vcenter' href="{{ url_for('index') }}">
+             <img class='vcenter' height=50px src="static/images/done.svg"/></a>
+             </td> -->
+        <td align='center'><h1>The Recipe Randomizer</h1></td>
+      </tr>
+      <tr><td height=15px></td></tr>
+    </table>
+
+    Choose a chapter from Mark Bittman's "How to Cook Everything fast" and download a random recipe.
+
+    <!-- Flashed error and info messages  -->
+    <div style='min-height:30px' class=''>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    </div>
+
+    <!-- Main content  -->
+    <table class='center' style='width:100%'>
+      <tr><td>
+    {% block content %}
+    {% endblock content %}
+      </td></tr>
+    </table>
+
+    <!-- Any other js we want to add -->
+    {% block js %}
+    {% endblock js %}
+
+  </body>
+</html>

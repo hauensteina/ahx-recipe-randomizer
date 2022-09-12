@@ -1,0 +1,133 @@
+
+input {
+    height:25px
+}
+
+select {
+    height:25px
+}
+
+.error {
+    color:red;
+}
+
+.center {
+    margin-left:auto;
+    margin-right:auto;
+}
+.text-center {
+    text-align:center;
+}
+
+.vcenter {
+    vertical-align:middle;
+}
+
+.bottom-space-20 {
+    margin-bottom:20px;
+}
+
+a:link {
+  color: black;
+}
+
+a:visited {
+  color: black;
+}
+
+a:hover {
+  color: blue;
+}
+
+a:active {
+  color: blue;
+}
+
+.active_screen { 
+  font-weight:bold;
+}
+
+.flashes {
+  list-style-type:none;
+}
+
+/* The DB row display table */
+
+.dbtable {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.75em;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.dbtable td, .dbtable th {
+  border: 1px solid #bbb;
+  padding: 4px;
+}
+
+.dbtable tr:nth-child(even){background-color: #f2f2f2;}
+
+.dbtable tr:hover {background-color: #ddd;}
+
+.dbtable th {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  text-align: center;
+  background-color: hsl(220, 100%, 90%);
+  color: black;
+  font-weight:normal;
+  font-size: 1.1em;
+}
+
+/*
+.hlink {
+    text-decoration: none;
+    color: #505050;
+}
+
+.hlink:visited {
+    text-decoration: none;
+    color: #505050; 
+}
+
+.hlink:hover {
+    text-decoration: none;
+    color: #b82e25;
+}
+
+.hlink:active {
+    text-decoration: none;
+    color: #b82e25;
+}
+
+.glink {
+    text-decoration: none;
+    color: green;
+}
+
+.glink:visited {
+    text-decoration: none;
+    color: green;
+}
+
+.glink:hover {
+    text-decoration: none;
+    color: #444444;
+}
+
+.glink:active {
+    text-decoration: none;
+    color: #444444;
+}
+*/
+.col_red {
+    color: #b82e25
+}
+
+/* These are useful for layout debugging */
+.red-border { border-style:solid; border-color:red; }
+.green-border { border-style:solid; border-color:green; }
+.blue-border { border-style:solid; border-color:blue; }
+.yellow-border { border-style:solid; border-color:yellow; }
+.magenta-border { border-style:solid; border-color:magenta; }
+.cyan-border { border-style:solid; border-color:cyan; }

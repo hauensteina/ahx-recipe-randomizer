@@ -1,0 +1,21 @@
+{% extends 'tabs/example/template.html' %}
+
+{% block content %}
+<div id=search_section>
+  <form method=post>
+    <!-- These hidden inputs are required -->
+    <input type=hidden name=_active_tab value="{{ active_tab }}">
+    <input type=hidden name=_active_screen value="{{ active_screen }}">
+    <input type=hidden name=_action value=search>
+
+    {{ search_html|safe }}
+    <input type=submit value=Search>
+  </form>
+  <div class=bottom-space-20></div>
+</div>
+<div id=display_section>
+  {{ display_html|safe }}
+  <div class=bottom-space-20></div>
+</div>
+{% endblock content %}
+
