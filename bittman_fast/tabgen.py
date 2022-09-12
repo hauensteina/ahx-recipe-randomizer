@@ -76,8 +76,12 @@ def _gen_body( tabname, active_tab, active_screen, parms):
     tabscreens = _get_html_files( tabname)
     if not 'template.html' in tabscreens: 
         return res + 'nothing here' + tail, ''
-    if not active_tab: active_tab = _get_tabnames()[0]
-    if not active_screen: active_screen = 'template'
+    if not active_tab: 
+        active_tab = _get_tabnames()[0]
+        parms['_active_tab'] = active_tab
+    if not active_screen: 
+        active_screen = 'template'
+        parms['_active_screen'] = active_screen
     template = 'tabs/' + tabname + '/' + active_screen + '.html'
     modname = f'bittman_fast.templates.tabs.{active_tab}.{active_screen}'
     modpy = modname.replace( '.', '/') + '.py'
@@ -85,28 +89,42 @@ def _gen_body( tabname, active_tab, active_screen, parms):
     # No html file for this screen. This should never happen.
     if not os.path.exists(modhtml):
         return f'ERROR:tabgen(): Screen html file {active_tab}/{modhtml} not found',''
-    # No python file for this screen. Just render the verbatim template.
-    elif not os.path.exists(modpy):
-        links = _get_screen_links( tabname, active_tab, active_screen) 
-        res += render_template( template, screen_links=links, active_tab=active_tab, active_screen=active_screen) + tail 
-        return res,''
     # The foreground tab. Show the active screen.
-    elif tabname == active_tab: 
-        mod = tab_modules[modname] # importlib.import_module( modname)
-        log( f'tabgen: found module for {active_tab}.{active_screen}')
-        search_html, display_html, error, rredirect = mod.action_handler(parms).values()
-        if rredirect: return '',rredirect
-        links = _get_screen_links( tabname, active_tab, active_screen) 
-        res += render_template( template, screen_links=links, error=error, 
-                                search_html=search_html, display_html=display_html,
-                                active_tab=active_tab, active_screen=active_screen) + tail
+    if tabname == active_tab: 
+        if not os.path.exists(modpy): # No code => just render
+            links = _get_screen_links( tabname, active_tab, active_screen) 
+            res += render_template( template, screen_links=links, active_tab=active_tab, active_screen=active_screen) + tail 
+        else:
+            mod = tab_modules[modname] # importlib.import_module( modname)
+            log( f'tabgen: foreground tab: found module {modname}')
+            search_html, display_html, error, rredirect = mod.action_handler(parms).values()
+            if rredirect: return '',rredirect
+            links = _get_screen_links( tabname, active_tab, active_screen) 
+            res += render_template( template, screen_links=links, error=error, 
+                                    search_html=search_html, display_html=display_html,
+                                    active_tab=active_tab, active_screen=active_screen) + tail
         return res,''
-    # A background tab. Just render the verbatim template.
+    # A background tab. Just render template.html
     elif tabname != active_tab: 
         links = _get_screen_links( tabname, active_tab, active_screen) 
         template = 'tabs/' + tabname + '/' + 'template.html'
-        res += render_template( template, screen_links=links, error='',
-                               active_tab=active_tab, active_screen=active_screen) + tail
+        modname = f'bittman_fast.templates.tabs.{tabname}.template'
+        modpy = modname.replace( '.', '/') + '.py'
+        modhtml = modname.replace( '.', '/') + '.html'
+        if not os.path.exists(modpy): # No code => just render
+            links = _get_screen_links( tabname, active_tab, active_screen) 
+            res += render_template( template, screen_links=links, active_tab=active_tab, active_screen=active_screen) + tail 
+        else:
+            mod = tab_modules[modname] # importlib.import_module( modname)
+            log( f'tabgen: background tab: found module {modname}')
+            parms['_active_tab'] = tabname
+            parms['_active_screen'] = 'template'            
+            search_html, display_html, error, rredirect = mod.action_handler(parms).values()
+            if rredirect: return '',rredirect
+            links = _get_screen_links( tabname, active_tab, active_screen) 
+            res += render_template( template, screen_links=links, error=error, 
+                                    search_html=search_html, display_html=display_html,
+                                    active_tab=tabname, active_screen='template') + tail
         return res, ''
     return '', 'tabgen():_gen_body fell through'
 
@@ -126,9 +144,11 @@ def _gen_rest( bodies):
     res += '\n</div></div>'
     return res
 
-def _get_title( screen):
-    """ 'my_tab.html' -> 'My Tab' """
-    title = os.path.splitext(screen)[0].split('_')
+def _get_title( tabname):
+    """ '01_my_tab.html' -> 'My Tab' """
+    # Remove leading 01_
+    tabname = re.sub( '^[0-9][0-9]_','',tabname)
+    title = os.path.splitext(tabname)[0].split('_')
     title = [ x.capitalize() for x in title ]
     title = ' '.join(title)
     return title

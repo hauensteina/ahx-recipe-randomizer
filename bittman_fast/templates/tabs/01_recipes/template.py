@@ -18,7 +18,7 @@ SEARCH_FORM = [ {'name':'chapter', 'choices':('user','admin')} ]
 
 def action_handler(parms):
     """ Get the _action parameter and branch to the appropriate handler """
-    action = parms.get('_action','')
+    action = parms.get('_action','init')
     if not action:
         return { 'search_html':'', 'display_html':'', 'error':'Parameter _action missing', 'redirect':'' }
     handler = ACTION_HANDLERS.get(action,'')
